@@ -47,6 +47,33 @@ def register():
 
     return render_template("register.html")
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        db = get_db_connection()
+        cursor = db.cursor()
+
+        query = """
+        SELECT * FROM users
+        WHERE email = %s AND password = %s
+        """
+
+        cursor.execute(query, (email, password))
+
+        user = cursor.fetchone()
+
+        cursor.close()
+        db.close()
+
+        if user:
+            return "Login successful!"
+        else:
+            return "Invalid email or password!"
+
+    return render_template("login.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
