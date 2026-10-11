@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import mysql.connector
 
 app = Flask(__name__)
-
+app.secret_key = "skillmatch_secret_key"
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -69,11 +69,25 @@ def login():
         db.close()
 
         if user:
+            session["user_id"] = user[0]
+            session["user_name"] = user[1]
             return "Login successful!"
         else:
             return "Invalid email or password!"
 
     return render_template("login.html")
+
+@app.route("/dashboard")
+def dashboard():
+    if "user_id" not in session:
+        return "Please login first!"
+
+    return render_template("dashboard.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return "Logged out successfully!"
 
 if __name__ == "__main__":
     app.run(debug=True)
