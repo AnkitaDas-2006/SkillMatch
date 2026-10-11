@@ -8,11 +8,25 @@
 
     <h1>SkillMatch</h1>
 
-    <h2>Welcome to SkillMatch!</h2>
+    <h2>Welcome, {{ user.name }}!</h2>
 
-    <p>You are successfully logged in.</p>
+    <h3>My Profile</h3>
 
-    <p>Welcome, {{ session["user_name"] }}!</p>
+    <p><strong>Branch:</strong> {{ user.branch }}</p>
+
+    <p><strong>Year:</strong> {{ user.year }}</p>
+
+    <p><strong>Skills:</strong> {{ user.skills }}</p>
+
+    <p><strong>Interests:</strong> {{ user.interests }}</p>
+
+    <p><strong>Availability:</strong> {{ user.availability }}</p>
+
+    <br>
+
+    <a href="/profile">Edit Profile</a>
+
+    <br><br>
 
     <button>Find Teammates</button>
     <button>Create Project</button>

@@ -84,8 +84,23 @@ def dashboard():
     if "user_id" not in session:
         return "Please login first!"
 
-    return render_template("dashboard.html")
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
 
+    query = """
+    SELECT name, branch, year, skills, interests, availability
+    FROM users
+    WHERE id = %s
+    """
+
+    cursor.execute(query, (session["user_id"],))
+
+    user = cursor.fetchone()
+
+    cursor.close()
+    db.close()
+
+    return render_template("dashboard.html", user=user)
 
 @app.route("/logout")
 def logout():
