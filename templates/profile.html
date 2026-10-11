@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile - SkillMatch</title>
+</head>
+
+<body>
+
+    <h1>SkillMatch</h1>
+
+    <h2>My Profile</h2>
+
+    <form method="POST" action="/profile">
+
+        <label>Skills:</label><br>
+        <input type="text" name="skills"
+               placeholder="Java, Python, SQL, HTML"><br><br>
+
+        <label>Interests:</label><br>
+        <input type="text" name="interests"
+               placeholder="AI, Web Development, Cybersecurity"><br><br>
+
+        <label>Availability:</label><br>
+        <select name="availability">
+            <option value="Weekdays">Weekdays</option>
+            <option value="Weekends">Weekends</option>
+            <option value="Both">Both</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Save Profile</button>
+
+    </form>
+
+    <br>
+
+    <a href="/dashboard">Back to Dashboard</a>
+
+</body>
+</html>

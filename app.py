@@ -4,6 +4,7 @@ import mysql.connector
 app = Flask(__name__)
 app.secret_key = "skillmatch_secret_key"
 
+
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
@@ -28,7 +29,6 @@ def register():
         year = request.form["year"]
 
         db = get_db_connection()
-
         cursor = db.cursor()
 
         query = """
@@ -46,6 +46,7 @@ def register():
         return "Registration successful!"
 
     return render_template("register.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -77,6 +78,7 @@ def login():
 
     return render_template("login.html")
 
+
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
@@ -84,10 +86,46 @@ def dashboard():
 
     return render_template("dashboard.html")
 
+
 @app.route("/logout")
 def logout():
     session.clear()
     return "Logged out successfully!"
+
+
+@app.route("/profile", methods=["GET", "POST"])
+def profile():
+    if "user_id" not in session:
+        return "Please login first!"
+
+    if request.method == "POST":
+        skills = request.form["skills"]
+        interests = request.form["interests"]
+        availability = request.form["availability"]
+
+        db = get_db_connection()
+        cursor = db.cursor()
+
+        query = """
+        UPDATE users
+        SET skills = %s, interests = %s, availability = %s
+        WHERE id = %s
+        """
+
+        cursor.execute(
+            query,
+            (skills, interests, availability, session["user_id"])
+        )
+
+        db.commit()
+
+        cursor.close()
+        db.close()
+
+        return "Profile saved successfully!"
+
+    return render_template("profile.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
